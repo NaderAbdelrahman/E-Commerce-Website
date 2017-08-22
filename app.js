@@ -17,7 +17,7 @@ var userRoutes = require('./routes/user');
 
 var app = express();
 
-mongoose.connect('localhost:27017/shopping');
+mongoose.connect('mongodb://heroku_jnq5gcwg:augiuuk0t0lsaqla5e3kffa17k@ds155587.mlab.com:55587/heroku_jnq5gcwg');
 require('./config/passport');
 
 // view engine setup
@@ -37,7 +37,8 @@ app.use(session({
     saveUninitialized: false,
     store: new MongoStore({
         mongooseConnect: mongoose.connection,
-        url: 'mongodb://localhost:27017'
+        // url: 'mongodb://localhost:27017'
+        url: 'mongodb://heroku_jnq5gcwg:augiuuk0t0lsaqla5e3kffa17k@ds155587.mlab.com:55587/heroku_jnq5gcwg'
     }),
     cookie: { maxAge: 180 * 60 * 1000}
 
