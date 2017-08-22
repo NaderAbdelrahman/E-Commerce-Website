@@ -1,29 +1,25 @@
-var cool = require('cool-ascii-faces');
 var express = require('express');
 var router = express.Router();
-var csrf = require('csurf');
-var passport = require('passport');
-
-var csrfProtection = csrf();
-router.use(csrfProtection);
+var Cart = require('../models/cart');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('shop/index', { title: 'Shopping Cart' });
 });
-router.get('/user/signup', function(req, res, next){
-    var messages = req.flash('error');
-  res.render('user/signup', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0});
-});
 
-router.post('/user/signup', passport.authenticate('local.signup', {
-    successRedirect: '/user/profile',
-    failureRedirect: '/user/signup',
-    failureFlash: true
-}));
+router.get('/add-to-cart:id', function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session : {});
 
-router.get('/user/profile', function(req, res, next){
- res.render('user/profile');
+  Product.findById(productId, function (err, product) {
+      if (err){
+        return res.redirect('/');
+      }
+      cart.add(product, product.id);
+      req.session.cart = cart;
+      console.log(req.session.cart);
+      res.redirect('/');
+  });
 });
 
 module.exports = router;
