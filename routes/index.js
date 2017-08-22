@@ -6,7 +6,12 @@ var Cart = require('../models/cart');
 /* GET home page. */
 router.get('/', function(req, res, next) {
     Product.find(function (err, docs) {
-        res.render('shop/index', { title: 'Shopping Cart', products: docs });
+        var productChunks = [];
+        var chunkSize = 3;
+        for (var i = 0; i < docs.length; i += chunkSize){
+            productChunks.push(docs.slice(i, i + chunkSize));
+        }
+        res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
     });
 });
 
