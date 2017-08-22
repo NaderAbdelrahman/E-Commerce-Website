@@ -1,15 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var Product = require('../models/product');
 var Cart = require('../models/cart');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('shop/index', { title: 'Shopping Cart' });
+    Product.find(function (err, docs) {
+        res.render('shop/index', { title: 'Shopping Cart', products: docs });
+    });
 });
 
-router.get('/add-to-cart:id', function (req, res, next) {
+router.get('/add-to-cart/:id', function (req, res, next) {
   var productId = req.params.id;
-  var cart = new Cart(req.session.cart ? req.session : {});
+  var cart = new Cart(req.session.cart ? req.session : {items: {}});
 
   Product.findById(productId, function (err, product) {
       if (err){
