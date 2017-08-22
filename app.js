@@ -17,6 +17,8 @@ var userRoutes = require('./routes/user');
 
 var app = express();
 
+mongoose.Promise = global.Promise;
+
 mongoose.connect('mongodb://heroku_jnq5gcwg:augiuuk0t0lsaqla5e3kffa17k@ds155587.mlab.com:55587/heroku_jnq5gcwg');
 require('./config/passport');
 
